@@ -1,0 +1,25 @@
+{
+  "name": "note-taker",
+  "version": "1.0.0",
+  "description": "note-taker",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chenkrkic/note-taker.git"
+  },
+  "keywords": [
+    "note-take"
+  ],
+  "author": "jayChen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chenkrkic/note-taker/issues"
+  },
+  "homepage": "https://github.com/chenkrkic/note-taker#readme",
+  "dependencies": {
+    "requirer": "0.0.4"
+  }
+}
