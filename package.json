@@ -4,6 +4,7 @@
   "description": "note-taker",
   "main": "index.js",
   "scripts": {
+    "start": "node serve.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,6 +21,10 @@
   },
   "homepage": "https://github.com/chenkrkic/note-taker#readme",
   "dependencies": {
+    "express": "^4.17.1",
     "requirer": "0.0.4"
+  },
+  "devDependencies": {
+    "jest": "^27.0.6"
   }
 }
