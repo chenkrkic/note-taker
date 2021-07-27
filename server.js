@@ -2,55 +2,53 @@ const express = require("express");
 const app = express();
 const fs = require("fs");
 const path = require("path");
-const http = require("http");
+
+//var http = require("http");
 
 const PORT = process.env.PORT || 3001;
 
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static("public"));
+app.use(express.static('public'));
 
-app.get("/notes", (request, response) => {
-
-    response.sendFile(path.join(__dirname, "public", "notes.html"));
+app.get("/notes", (req, res) => {
+    res.sendFile(path.join(__dirname, "./public/notes.html"));
 });
 
-app.get("/", (request, response) => {
-    response.sendFile(path.join(__dirname, "public", "index.html"));
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "./public/index.html"));
 });
 
-app.get("/api/notes", (request, response) => {
+app.get("/api/notes", (req, res) => {
 
     fs.readFile(path.join(__dirname, "db", "db.json"), 'utf8', (err, jsonString) => {
         if (err) {
-            console.log("Unable to read file:", err)
+            console.log("File read failed:", err)
             return
         }
         console.log('File data:', jsonString)
-        response.json(JSON.parse(jsonString));
+        res.json(JSON.parse(jsonString));
     });
 });
 
-app.post("/api/notes", function (request, response) {
+app.post("/api/notes", function (req, res) {
 
     fs.readFile(path.join(__dirname, "db", "db.json"), 'utf8', (err, jsonString) => {
         if (err) {
-            console.log("Unable to read file:", err)
+            console.log("File read failed:", err)
             return
         }
-        console.log('File data:', jsonString);
 
         var notes = JSON.parse(jsonString);
 
         const newNote = {
-            title: request.body.title,
-            text: request.body.text,
-            id: Math.random().toString(36).substring(7)
+            title: req.body.title,
+            text: req.body.text,
+            id: Math.random().toString(36).substr(7)
         };
 
         notes.push(newNote);
-
         let NotesJSON = JSON.stringify(notes);
 
         fs.writeFile(path.join(__dirname, "db", "db.json"), NotesJSON, (err) => {
@@ -61,11 +59,11 @@ app.post("/api/notes", function (request, response) {
             return NotesJSON;
         });
 
-    })
+    });
 
 });
 
-app.delete('/api/notes/:id', function (request, response) {
+app.delete('/api/notes/:id', function (req, res) {
 
     fs.readFile(path.join(__dirname, "db", "db.json"), 'utf8', (err, jsonString) => {
         if (err) {
@@ -73,17 +71,15 @@ app.delete('/api/notes/:id', function (request, response) {
             return
         }
         console.log('File data:', jsonString);
-
-        var notes = JSON.parse(jsonString);
+        const notes = JSON.parse(jsonString);
 
         const newNote = {
-            title: request.body.title,
-            text: request.body.text,
-            id: Math.random().toString(36).substring(7)
+            title: req.body.title,
+            text: req.body.text,
+            id: Math.random().toString(36).substr(7)
         };
 
-
-        notes.splice(request.params.id, 1);
+        notes.splice(req.params.id, 1);
 
         let NotesJSON = JSON.stringify(notes);
 
@@ -91,14 +87,14 @@ app.delete('/api/notes/:id', function (request, response) {
             if (err) {
                 return console.log(err);
             }
-            //console.log("Success!", NotesJSON);
+            console.log("Success!", NotesJSON);
             return NotesJSON;
         });
 
-    })
+    });
 
 });
 
 app.listen(PORT, () => {
-    console.log("API server is on PORT" + PORT);
+    console.log(`Server is listening on PORT ${PORT}`);
 });
